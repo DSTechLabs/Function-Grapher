@@ -1,0 +1,112 @@
+<!--=======================================================
+//
+//     FILE : header.html
+//
+//  PROJECT : Function Grapher - AngularJS
+//
+//   AUTHOR : Bill Daniels
+//            Copyright 1989-2016, D+S Tech Labs, Inc.
+//            All Rights Reserved
+//
+//======================================================-->
+
+<style>
+
+  #headerBar
+  {
+    position : fixed;
+    left     : 0px;
+    top      : 0px;
+    width    : 100%;
+    height   : 55px;
+    padding  : 4px 10px 0px 10px;
+    overflow : hidden;
+    z-index  : 100;
+
+    -webkit-box-sizing : border-box;  /* Safari/Chrome, other WebKit */
+    -moz-box-sizing    : border-box;  /* Firefox, other Gecko */
+    box-sizing         : border-box;  /* Opera/IE 8+ */
+
+    color               : #FFF0C0;
+    background-color    : #404040;  /* fallback */
+    background-image    : url("./Images/bg_BrushedMetal_Dark.jpg");
+    background-position : center top;
+
+    /*border-bottom : 2px outset #C06030;*/
+    box-shadow    : 0px 5px 10px 2px #000000;
+    white-space   : nowrap;
+  }
+
+  #headerTitle
+  {
+    display        : inline-block;
+    margin-top     : 7px;
+    color          : #FFF0C0;
+    font-family    : ethnoFont, "Arial Black", sans-serif;
+    font-size      : xx-large;
+    font-weight    : normal;
+    letter-spacing : 2px;
+    white-space    : nowrap;
+    text-shadow    : 4px 4px 2px #000000;  /* , -1px -1px 1px #00CAD3 */
+    vertical-align : top;
+  }
+
+  #headerSubtitle
+  {
+    display        : inline-block;
+    color          : #006A73;
+    font-family    : "Times New Roman", Times, serif;
+    font-size      : medium;
+    font-weight    : bold;
+    font-style     : italic;
+    letter-spacing : 2px;
+    white-space    : nowrap;
+    text-shadow    : 1px 1px #000000;
+    vertical-align : top;
+  }
+
+  .headerLink
+  {
+    font-family    : Verdana, sans-serif;
+    font-size      : medium;
+    vertical-align : middle;
+    white-space    : nowrap;
+  }
+
+</style>
+
+<div id="headerBar">
+
+  <!-- Logo -->
+  <div class="floatLeft">
+    <!--<img src="Images/logo_DSTechLabs_Lagoon.png" alt="D+S Tech Labs" />-->
+    <a href="http://dstechlabs.com" target="_blank"><img src="./Images/icon_DS.png" alt="D+S Tech Labs" /></a> &nbsp; &nbsp;
+    <div id="headerTitle">Function Grapher</div>
+  </div>
+
+  <!-- Follow Links -->
+  <div class="floatRight">
+
+    <!-- Pinterest -->
+    <a
+      data-pin-do="buttonPin"
+      data-pin-custom="true"
+      data-pin-media="http://dstechlabs.com/FunctionGrapher/Images/ScreenShot.jpg"
+      data-pin-description="D+S Tech Labs - Graph Any Function"
+      data-pin-id="http://dstechlabs.com/FunctionGrapher"
+      data-pin-url="http://dstechlabs.com/FunctionGrapher"
+      href="https://www.pinterest.com/pin/create/button/?url=http://dstechlabs.com/FunctionGrapher/&media=http://dstechlabs.com/FunctionGrapher/Images/ScreenShot.jpg/&description=D%2BS%20Tech%20Labs%20-%20Graph%20Any%20Function"
+      target="_blank">
+      <img style="vertical-align:middle" src="./Images/icon_Pinterest_48.png" alt="Pinterest" /></a>
+
+    <!-- LinkedIn -->
+    <a href="http://www.linkedin.com/company/dstechlabs" title="LinkedIn" target="_blank">
+      <img style="margin-left:3px; vertical-align:middle" src="./Images/icon_LinkedIn_48.png" alt="LinkedIn" /></a>
+
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/DSTechLabs" title="Facebook" target="_blank">
+      <img style="margin-left:3px; vertical-align:middle" src="./Images/icon_Facebook_48.png" alt="Facebook" /></a>
+
+  </div>
+
+</div>

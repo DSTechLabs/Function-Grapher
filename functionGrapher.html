@@ -1,0 +1,251 @@
+<!--=======================================================
+//
+//     FILE : functionGrapher.html
+//
+//  PROJECT : Function Grapher - AngularJS
+//
+//   AUTHOR : Bill Daniels
+//            Copyright 1989-2016, D+S Tech Labs, Inc.
+//            All Rights Reserved
+//
+//======================================================-->
+
+<style>
+
+  #controlPanel
+  {
+    position   : fixed;
+    left       : 0px;
+    top        : 55px;
+    width      : 320px;
+    height     : 100%;
+    padding    : 20px 0px 0px 10px;
+    overflow-x : hidden;
+    overflow-y : auto;
+    z-index    : 40;
+
+    -webkit-box-sizing : border-box;  /* Safari/Chrome, other WebKit */
+    -moz-box-sizing    : border-box;  /* Firefox, other Gecko */
+    box-sizing         : border-box;  /* Opera/IE 8+ */
+
+    color               : #FFF0C0;
+    background-color    : #404040;  /* fallback */
+    background-image    : url("./Images/bg_BrushedMetal_Dark.jpg");
+    background-position : center top;
+
+    /*border-bottom : 2px outset #C06030;*/
+    box-shadow    : 0px 5px 10px 2px #000000;
+    white-space   : nowrap;
+
+    font-family : sans-serif;
+    font-size   : small;
+    text-align  : center;
+  }
+
+  #graphRange
+  {
+    width     : 290px;
+    max-width : 290px;
+    color     : #000000;
+    /*text-shadow : -1px -1px #C0C0C0;*/
+  }
+
+  #functionList
+  {
+    width     : 290px;
+    max-width : 290px;
+    color     : #000000;
+
+    font-family : Verdana, sans-serif;
+    font-size   : large;
+    font-weight : normal;
+    /*text-shadow : -1px -1px #C0C0C0;*/
+
+    white-space : nowrap;
+  }
+
+  .fgFunction
+  {
+    width      : 240px;
+    padding    : 0px 5px;
+
+    color            : #000000;
+    background-color : #FFF0C0;
+    border           : 1px solid #000000;
+    border-radius    : 5px;
+/*    box-shadow       : 1px 1px #000000 inset;  */
+
+    font-family : Verdana, sans-serif;
+    font-size   : large;
+    font-weight : normal;
+  }
+
+  .plotOptions
+  {
+    /*margin-top   : 1px;*/
+    margin-right : 8px;
+    margin-bottom : 3px;
+    font-family  : sans-serif;
+    font-size    : small;
+    text-align   : right;
+  }
+
+  .plotColor
+  {
+    margin-top  : 0px;
+    margin-left : 20px;
+    padding     : 0px;
+    width       : 60px;
+    height      : 18px;
+
+    vertical-align : top;
+  }
+
+  #copyright
+  {
+    margin-top  : 2px;
+    color       : #FFF0C0;
+    font-family : serif;
+    font-style  : italic;
+    font-size   : small;
+    text-shadow : 1px 1px #000000;
+  }
+
+  /*-------------------------------------------------------*/
+
+  #graphCanvas
+  {
+    position         : fixed;
+    left             : 330px;  /* set this to width of controlPanel + 10 */
+    top              : 65px;   /* set this to height of header + 10 */
+    background-color : #FFF0C0;
+    overflow         : hidden;
+    z-index          : 20;
+
+    image-rendering        : optimizeSpeed;              /* Older versions of FF          */
+    image-rendering        : -moz-crisp-edges;           /* FF 6.0+                       */
+    image-rendering        : -webkit-optimize-contrast;  /* Webkit (non standard naming)  */
+    image-rendering        : -o-crisp-edges;             /* OS X & Windows Opera (12.02+) */
+    image-rendering        : crisp-edges;                /* Possible future browsers.     */
+    -ms-interpolation-mode : nearest-neighbor;           /* IE (non standard naming)      */
+  }
+
+  #zoomBoxOverlay
+  {
+    position         : fixed;
+    left             : 330px;  /* set this to width of controlPanel + 10 */
+    top              : 65px;   /* set this to height of header + 10 */
+    background-color : transparent;
+    overflow         : hidden;
+    z-index          : 30;
+
+    image-rendering        : optimizeSpeed;              /* Older versions of FF          */
+    image-rendering        : -moz-crisp-edges;           /* FF 6.0+                       */
+    image-rendering        : -webkit-optimize-contrast;  /* Webkit (non standard naming)  */
+    image-rendering        : -o-crisp-edges;             /* OS X & Windows Opera (12.02+) */
+    image-rendering        : crisp-edges;                /* Possible future browsers.     */
+    -ms-interpolation-mode : nearest-neighbor;           /* IE (non standard naming)      */
+  }
+
+</style>
+
+
+<!-- UI -->
+
+<div style="height:100%" ng-controller="FGController">
+
+  <!-- Control Panel -->
+  <div id="controlPanel">
+
+    <!-- Graph Control -->
+    <div id="graphRange" class="groupBox">
+
+      <div class="groupBoxTitle">
+        Graph Range
+        <img src="./Images/icon_Question.png" style="vertical-align:middle" onmousedown="ShowModalFile ('./help_GraphRanges.html');" />
+      </div>
+
+      <div class="groupBoxContent" style="text-align:center">
+
+        <table>
+          <tr>
+            <td align="right" valign="middle">X-Axis Range:</td>
+            <td align="left"  valign="middle">
+              <input class="digital" ng-model="xRange_Lo" onfocus="$(this).select()" ng-blur="rangeChanged()" ng-keyup="($event.which===13) ? rangeChanged():0" /> to
+              <input class="digital" ng-model="xRange_Hi" onfocus="$(this).select()" ng-blur="rangeChanged()" ng-keyup="($event.which===13) ? rangeChanged():0" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="middle">Y-Axis Range:</td>
+            <td align="left"  valign="middle">
+              <input class="digital" ng-model="yRange_Lo" onfocus="$(this).select()" ng-blur="rangeChanged()" ng-keyup="($event.which===13) ? rangeChanged():0" /> to
+              <input class="digital" ng-model="yRange_Hi" onfocus="$(this).select()" ng-blur="rangeChanged()" ng-keyup="($event.which===13) ? rangeChanged():0" />
+            </td>
+          </tr>
+        </table>
+
+        <button ng-click="resetRanges()">Reset to defaults</button> &nbsp;
+        <button ng-click="setDefaults()">Set as defaults</button><br>
+        <hr style="margin:3px 0px">
+        <button ng-click="zoomIn()">Zoom In</button> &nbsp;
+        <img src="./Images/icon_Question.png" style="vertical-align:middle" onmousedown="ShowModalFile ('./help_Zoom.html');" /> &nbsp;
+        <button ng-click="zoomOut()">Zoom Out</button><br>
+
+        <hr style="margin:3px 0px">
+
+        <input id="axesBox" type="checkbox" ng-model="Axes" ng-change="axesChanged()" checked />
+        <label for="axesBox">Show Axes</label>
+        &nbsp; &nbsp; &nbsp;
+
+        <input id="gridBox" type="checkbox" ng-model="Grid" ng-change="axesChanged()" checked />
+        <label for="gridBox">Show Grid</label>
+
+      </div>
+
+    </div><br>
+
+    <!-- Function List -->
+    <div id="functionList" class="groupBox">
+
+      <div class="groupBoxTitle">
+        Function List
+        <img src="./Images/icon_Question.png" style="vertical-align:middle" onmousedown="ShowModalFile ('./help_FunctionList.html');" />
+      </div>
+
+      <div class="groupBoxContent" style="text-align:center">
+
+        <div ng-repeat="func in functionArray">
+          y = <input type="text" class="fgFunction" title="Edit function" ng-model="func.functionInput" ng-blur="cartesianGraph.Redraw()" ng-keyup="($event.which===13) ? cartesianGraph.Redraw():0" /><br>
+          <div class="plotOptions">
+            <!--<button class="plotColor" ng-style="{ 'background-color':func.plotColor }" title="Change plot color" ng-click="setPlotColor($index);">Plot Color</button> &nbsp;-->
+            <input id="colr_{{ $index }}" type="color"    class="plotColor" title="Change plot color" ng-model="func.plotColor" ng-change="cartesianGraph.Redraw()" /> &nbsp;
+            <input id="plot_{{ $index }}" type="checkbox" style="vertical-align:middle" title="Plot or hide function" ng-model="func.plot" ng-change="cartesianGraph.Redraw()" /><label for="plot_{{ $index }}" style="vertical-align:middle">Plot</label> &nbsp;
+            <input id="bold_{{ $index }}" type="checkbox" style="vertical-align:middle" title="Plot normal or bold"   ng-model="func.bold" ng-change="cartesianGraph.Redraw()" /><label for="bold_{{ $index }}" style="vertical-align:middle">Bold</label>
+          </div>
+        </div>
+
+        ───── <img src="./Images/icon_Plus.png" style="cursor:pointer; vertical-align:middle" alt="Add Function" title="Add new function" ng-click="addFunction();" /> ─────<br>
+
+        <!--<button id="graphButton"> Plot All Functions </button>-->
+
+      </div>
+
+    </div><br>
+
+    <div id="copyright">
+      Copyright &copy; 1989-2016, D+S Tech Labs, Inc.<br>
+      All Rights Reserved
+    </div>
+
+  </div>
+
+  <!-- Cartesian Graph Drawing Surface -->
+  <canvas id="graphCanvas" width="100" height="100">
+    Your browser does not support the HTML5 &lt;canvas&gt; tag.<br>
+    Please upgrade your browser.<br>
+  </canvas>
+
+  <!-- Zoom Box Overlay -->
+  <canvas id="zoomBoxOverlay" width="100" height="100"></canvas>
+
+</div>
